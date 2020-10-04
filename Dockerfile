@@ -159,4 +159,19 @@ RUN mbconvert
 RUN make_watertight
 
 
+
+
+# make sure that pytest is installed
+# we'll need it to run the tests!
+RUN pip3 install pytest
+
+# Copy over the source code
+COPY minimal_openmc_dagmc_simulations minimal_openmc_dagmc_simulations/
+
+# Copy over the test folder
+COPY tests tests/
+
+CMD ["/bin/bash"]
+
+
 CMD ["/bin/bash"]
