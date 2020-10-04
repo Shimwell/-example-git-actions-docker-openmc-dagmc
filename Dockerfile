@@ -103,6 +103,7 @@ ENV DAGMC_INSTALL_DIR=$HOME/DAGMC/
 
 
 RUN cd $HOME && \
+    mkdir MOAB && \
     cd MOAB && \
     mkdir build && cd build && \
     cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR -DENABLE_PYMOAB=ON && \
