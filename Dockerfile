@@ -162,11 +162,8 @@ ENV LD_LIBRARY_PATH /MOAB/lib:$LD_LIBRARY_PATH
 
 
 #these commands should all be found but won't work as they need input files
-RUN occ_faceter
 RUN mbconvert
 RUN make_watertight
-
-
 
 
 # make sure that pytest is installed

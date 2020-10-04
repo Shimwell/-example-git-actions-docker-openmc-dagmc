@@ -1,8 +1,12 @@
+"""
+Example which simulates a simple DAGMC neutronics model using OpenMC
+"""
+import os
 
 import openmc
 
 class MinimalSimulation:
-    """This is a dummy class that has a few tiny methods to demonstrate testing
+    """This is a minimal class that has a few tiny methods to demonstrate testing
     """
 
     def __init__(self):
@@ -12,65 +16,44 @@ class MinimalSimulation:
         """this runs a simple tbr simulation using openmc and returns the
         tritium breeding ratio"""
 
-        breeder_material = openmc.Material(1, "PbLi")  # Pb84.2Li15.8
+        universe = openmc.Universe()
+        geom = openmc.Geometry(universe)
+
+        breeder_material = openmc.Material(name="blanket_material")  # Pb84.2Li15.8
         breeder_material.add_element('Pb', 84.2, percent_type='ao')
         breeder_material.add_element('Li', 15.8, percent_type='ao', enrichment=50.0, enrichment_target='Li6', enrichment_type='ao')  # 50% enriched
         breeder_material.set_density('atom/b-cm', 3.2720171e-2)  # around 11 g/cm3
 
+        magnet_material = openmc.Material(name="pf_coil_material")  # Pb84.2Li15.8
+        magnet_material.add_element('Cu', 1, percent_type='ao')
+        magnet_material.set_density('g/cm3', 8.96)  # around 11 g/cm3
 
-        mats = openmc.Materials([breeder_material])
+        mats = openmc.Materials([breeder_material, magnet_material])
 
+        settings = openmc.Settings()
+        settings.batches = 10
+        settings.inactive = 0
+        settings.particles = 100
+        settings.run_mode = "fixed source"
+        settings.dagmc = True
 
-        # GEOMETRY
-
-        # surfaces
-        vessel_inner = openmc.Sphere(r=500)
-        breeder_blanket_outer_surface = openmc.Sphere(r=600, boundary_type='vacuum')
-
-        # cells
-        inner_vessel_region = -vessel_inner
-        inner_vessel_cell = openmc.Cell(region=inner_vessel_region)
-
-        breeder_blanket_region = -breeder_blanket_outer_surface
-        breeder_blanket_cell = openmc.Cell(region=breeder_blanket_region)
-        breeder_blanket_cell.fill = breeder_material
-
-        # universe
-        universe = openmc.Universe(cells=[inner_vessel_cell, breeder_blanket_cell])
-        geom = openmc.Geometry(universe)
-
-
-        # SIMULATION SETTINGS
-
-        # Instantiate a Settings object
-        sett = openmc.Settings()
-        sett.batches = 2
-        sett.inactive = 0
-        sett.particles = 100
-        sett.run_mode = 'fixed source'
-
-        # Create a DT point source
         source = openmc.Source()
         source.space = openmc.stats.Point((0, 0, 0))
         source.angle = openmc.stats.Isotropic()
         source.energy = openmc.stats.Discrete([14e6], [1])
-        sett.source = source
+        settings.source = source
 
         tallies = openmc.Tallies()
-
-        # added a cell tally for tritium production
-        cell_filter = openmc.CellFilter(breeder_blanket_cell)
-        tbr_tally = openmc.Tally(name='TBR')
-        tbr_tally.filters = [cell_filter]
-        tbr_tally.scores = ['(n,Xt)']  # MT 205 is the (n,Xt) reaction where X is a wildcard, if MT 105 or (n,t) then some tritium production will be missed, for example (n,nt) which happens in Li7 would be missed
+        tbr_tally = openmc.Tally(name="TBR")
+        tbr_tally.scores = ["(n,Xt)"]  # where X is a wild card
         tallies.append(tbr_tally)
 
-        # Run OpenMC!
-        model = openmc.model.Model(geom, mats, sett, tallies)
-        sp_filename = model.run()
+        model = openmc.model.Model(geom, mats, settings, tallies)
+
+        output_filename = model.run()
 
         # open the results file
-        sp = openmc.StatePoint(sp_filename)
+        sp = openmc.StatePoint(output_filename)
 
         # access the tally using pandas dataframes
         tbr_tally = sp.get_tally(name='TBR')
