@@ -105,21 +105,19 @@ ENV DAGMC_REPO='https://github.com/svalinn/dagmc'
 ENV DAGMC_INSTALL_DIR=$HOME/DAGMC/
 
 
+# MOAB Install
 RUN cd $HOME && \
     mkdir MOAB && \
     cd MOAB && \
     git clone -b $MOAB_BRANCH $MOAB_REPO  && \
     mkdir build && cd build && \
-    cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR -DENABLE_PYMOAB=ON && \
-    # cmake ../moab -DENABLE_HDF5=ON -DENABLE_MPI=off -DENABLE_NETCDF=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR && \
+    cmake ../moab -DENABLE_HDF5=ON -DENABLE_MPI=off -DENABLE_NETCDF=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR && \
     make -j8 &&  \
     make -j8 install  && \
     cmake ../moab -DBUILD_SHARED_LIBS=OFF && \
     make -j8 install && \
-    # rm -rf $HOME/MOAB/moab $HOME/MOAB/build && \
-    cd pymoab && \
-    bash install.sh && \
-    python setup.py install
+    rm -rf $HOME/MOAB/moab $HOME/MOAB/build
+
 
 # DAGMC Install
 RUN cd $HOME && \
