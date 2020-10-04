@@ -49,6 +49,11 @@ RUN apt-get --yes install libblas-dev
 # RUN apt-get --yes install libatlas-dev 
 RUN apt-get --yes install liblapack-dev
 
+# needed to allow NETCDF on MOAB which helps with tet meshes in OpenMC
+RUN apt-get --yes install libnetcdf-dev
+RUN apt-get --yes install libnetcdf13
+
+
 RUN apt-get --yes install libeigen3-dev
 
 RUN rm /usr/bin/python
