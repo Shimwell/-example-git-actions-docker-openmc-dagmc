@@ -49,6 +49,8 @@ RUN apt-get --yes install libblas-dev
 # RUN apt-get --yes install libatlas-dev 
 RUN apt-get --yes install liblapack-dev
 
+RUN apt-get --yes install libeigen3-dev
+
 RUN rm /usr/bin/python
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
