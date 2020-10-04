@@ -166,6 +166,9 @@ RUN pip3 install pytest
 # Copy over the source code
 COPY minimal_openmc_dagmc_simulations minimal_openmc_dagmc_simulations/
 
+# copy over the pre build geometry
+COPY dagmc.h5m dagmc.h5m
+
 # Copy over the test folder
 COPY tests tests/
 
