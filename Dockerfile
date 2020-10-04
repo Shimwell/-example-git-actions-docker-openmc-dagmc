@@ -63,7 +63,7 @@ RUN pip3 install uncertainties
 RUN pip3 install lxml
 RUN pip3 install scipy
 RUN pip3 install pyvtk
-RUN pip3 install cpython
+RUN pip3 install cython
 
 
 # newer CMake version allows us to set libraries, includes of the
