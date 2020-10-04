@@ -180,6 +180,3 @@ COPY minimal_openmc_dagmc_simulations minimal_openmc_dagmc_simulations/
 COPY tests tests/
 
 CMD ["/bin/bash"]
-
-
-CMD ["/bin/bash"]
