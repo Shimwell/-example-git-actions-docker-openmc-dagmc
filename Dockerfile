@@ -1,4 +1,5 @@
-# Python and OpenMC installation
+
+FROM ubuntu:18.04
 
 RUN apt-get --yes update && apt-get --yes upgrade
 
