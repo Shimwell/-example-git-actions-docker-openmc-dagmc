@@ -157,15 +157,7 @@ RUN python3 data/convert_nndc71.py --cleanup
 
 ENV OPENMC_CROSS_SECTIONS=/nndc-b7.1-hdf5/cross_sections.xml
 
-
 ENV LD_LIBRARY_PATH /MOAB/lib:$LD_LIBRARY_PATH
-
-ENV PATH PATH $MOAB_INSTALL_DIR/bin:$PATH
-ENV PATH PATH $DAGMC_INSTALL_DIR/bin:$PATH
-#these commands should all be found but won't work as they need input files
-RUN mbconvert
-RUN make_watertight
-
 
 # make sure that pytest is installed
 # we'll need it to run the tests!
