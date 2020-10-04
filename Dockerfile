@@ -114,7 +114,7 @@ RUN cd $HOME && \
     # cmake ../moab -DENABLE_HDF5=ON -DENABLE_MPI=off -DENABLE_NETCDF=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR && \
     make -j8 &&  \
     make -j8 install  && \
-    cmake ../moab -DBUILD_SHARED_LIBS=ON && \
+    cmake ../moab -DBUILD_SHARED_LIBS=OFF && \
     make -j8 install && \
     # rm -rf $HOME/MOAB/moab $HOME/MOAB/build && \
     cd pymoab && \
