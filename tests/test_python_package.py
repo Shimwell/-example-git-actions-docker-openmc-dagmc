@@ -11,4 +11,4 @@ class TestMyProject(unittest.TestCase):
     def test_simulation_result(self):
         simulation = MinimalSimulation()
         tbr = simulation.simulate()
-        assert tbr == pytest.approx(0.4952795)
+        assert tbr == pytest.approx(0.439)
