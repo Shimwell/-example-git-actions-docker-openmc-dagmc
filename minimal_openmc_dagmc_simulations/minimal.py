@@ -31,7 +31,7 @@ class MinimalSimulation:
         mats = openmc.Materials([breeder_material, magnet_material])
 
         settings = openmc.Settings()
-        settings.batches = 10
+        settings.batches = 100
         settings.inactive = 0
         settings.particles = 100
         settings.run_mode = "fixed source"
